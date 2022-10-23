@@ -1,0 +1,11 @@
+{
+  "name": "support_desk",
+  "version": "1.0.0",
+  "description": "Support desk app component module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "author": "Akshaysl",
+  "license": "MIT"
+}
