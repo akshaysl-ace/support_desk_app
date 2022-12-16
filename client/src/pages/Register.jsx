@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
+import { TiDelete } from 'react-icons/ti';
 import { toast } from 'react-toastify';
+import { useSelector, useDispatch } from 'react-redux';
+import { registerUser, reset } from '../features/auth/authSlice';
+import Spinner from '../components/Spinner';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +15,22 @@ const Register = () => {
     password2: '',
   });
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user, isLoading, isSuccess, message, isError } = useSelector(
+    state => state.auth,
+  );
+
   const { name, email, password, password2 } = formData;
+
+  const resetFormData = () => {
+    setFormData({
+      name: '',
+      email: '',
+      password: '',
+      password2: '',
+    });
+  };
 
   const onChange = e => {
     setFormData(prevState => ({
@@ -24,8 +44,34 @@ const Register = () => {
 
     if (password !== password2) {
       toast.error('Passwords do not match !');
+    } else {
+      const userData = {
+        name,
+        email,
+        password,
+      };
+      dispatch(registerUser(userData));
     }
   };
+
+  useEffect(() => {
+    // toast error popUp
+    if (isError) {
+      toast.error(message, { autoClose: 2000 });
+      resetFormData();
+    }
+
+    // redirect when logged in
+    if (isSuccess || user) {
+      navigate('/');
+    }
+
+    dispatch(reset());
+  }, [isError, message, isSuccess, user, dispatch, navigate]);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
@@ -86,7 +132,15 @@ const Register = () => {
             />
           </div>
           <div className='form-group'>
-            <button className='btn btn-block'>Submit</button>
+            <button
+              className='btn btn-sm btn-back'
+              style={{ float: 'right' }}
+              onClick={resetFormData}>
+              <TiDelete size={20} /> Clear data
+            </button>
+            <button type='submit' className='btn btn-block'>
+              Submit
+            </button>
           </div>
         </form>
       </section>
