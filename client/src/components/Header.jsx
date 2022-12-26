@@ -14,7 +14,7 @@ const Header = () => {
     dispatch(logOut());
     dispatch(reset());
     navigate('/');
-    toast('Logged out successfully !', { autoClose: 2000 });
+    toast(`${user.name} logged out successfully !`, { autoClose: 2000 });
   };
 
   const getNonAuthLinks = () => {
