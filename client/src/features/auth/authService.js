@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { API_URL, LOGIN_URL } from '../../app/constants';
+import { API_URL_USER, LOGIN_URL_USER } from '../../app/constants';
 
-const signUpUrl = API_URL;
-const signInUrl = LOGIN_URL;
+const signUpUrl = API_URL_USER;
+const signInUrl = LOGIN_URL_USER;
 
 // Register a user
 const registerTheUser = async user => {
